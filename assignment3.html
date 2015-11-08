@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Online/Offline page!</title>
+    
+<style>
+    #status {
+    height: 100px; 
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center; 
+    }
+    #status.ONLINE {
+    background: yellowgreen;
+    }
+    #status.OFFLINE { 
+    background: orangered;
+    }
+    #log { 
+    background: paleturquoise;
+    border: 2px solid black;
+    border-radius: 10px; 
+    white-space: pre; 
+    max-height: 200px; 
+    overflow: auto;
+    }
+    p#state {
+    font-size: 30px;
+    }
+    .the_body {
+    font-family: sans-serif;
+    border: 3px solid black;
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px;
+    }
+</style>
+    
+<script>
+function updateOnlineStatus(msg) {
+  var status = document.getElementById("status");
+  var condition = navigator.onLine ? "ONLINE" : "OFFLINE";
+  status.setAttribute("class", condition);
+  var state = document.getElementById("state");
+  state.innerHTML = condition;
+  var log = document.getElementById("log");
+  log.appendChild(document.createTextNode("Event: " + msg + "; status=" + condition + "\n"));
+    setTimeout(function(){ updateOnlineStatus(msg); }, 3000);
+}
+    
+function pageLoaded() {
+  updateOnlineStatus("load");
+  document.body.addEventListener("offline", function () {      updateOnlineStatus("offline") }, false);
+  document.body.addEventListener("online", function () { updateOnlineStatus("online") }, false);
+}
+</script>
+</head>
+    
+<body onload="pageLoaded()" class="the_body">
+  <div id="status"><p id="state"/></div>
+    <br />
+  <div id="log"/>
+</body>
+</html>
